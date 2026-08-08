@@ -1,0 +1,67 @@
+"""Constants for the M3U Editor integration."""
+
+from __future__ import annotations
+
+from datetime import timedelta
+
+DOMAIN = "m3u_editor"
+
+# Default values
+DEFAULT_NAME = "M3U Editor"
+DEFAULT_HOST = "localhost"
+DEFAULT_PORT = 36400
+DEFAULT_PROTOCOL = "http"
+DEFAULT_API_VERSION = "v1"
+
+# Configuration keys
+CONF_HOST = "host"
+CONF_PORT = "port"
+CONF_PROTOCOL = "protocol"
+CONF_API_KEY = "api_key"
+CONF_USERNAME = "username"
+CONF_PASSWORD = "password"
+CONF_SSL = "ssl"
+CONF_VERIFY_SSL = "verify_ssl"
+CONF_SCAN_INTERVAL = "scan_interval"
+
+# API endpoints
+API_ENDPOINT_PLAYLISTS = "/api/user/playlists"
+API_ENDPOINT_EPGS = "/api/user/epgs"
+API_ENDPOINT_CHANNELS = "/api/channel/get"
+API_ENDPOINT_PLAYLIST_STATS = "/api/playlist/{uuid}/stats"
+API_ENDPOINT_PLAYLIST_SYNC = "/api/playlist/{uuid}/sync"
+API_ENDPOINT_EPG_SYNC = "/api/epg/{uuid}/sync"
+API_ENDPOINT_SYSTEM_INFO = "/api/system/info"
+
+# Token endpoints (Dispatcharr-compatible)
+API_ENDPOINT_TOKEN = "/api/accounts/token"
+API_ENDPOINT_TOKEN_REFRESH = "/api/accounts/token/refresh"
+
+# Timeout constants
+DEFAULT_TIMEOUT = 30
+DEFAULT_SCAN_INTERVAL = timedelta(minutes=5)
+
+# Attributes
+ATTR_PLAYLIST_ID = "playlist_id"
+ATTR_PLAYLIST_NAME = "playlist_name"
+ATTR_CHANNEL_COUNT = "channel_count"
+ATTR_EPG_COUNT = "epg_count"
+ATTR_LAST_SYNC = "last_sync"
+ATTR_STATUS = "status"
+ATTR_UUID = "uuid"
+
+# Services
+SERVICE_SYNC_PLAYLIST = "sync_playlist"
+SERVICE_SYNC_EPG = "sync_epg"
+SERVICE_REFRESH_DATA = "refresh_data"
+
+# Entity types
+ENTITY_TYPE_PLAYLIST = "playlist"
+ENTITY_TYPE_CHANNEL = "channel"
+ENTITY_TYPE_EPG = "epg"
+ENTITY_TYPE_PROXY = "proxy"
+
+# Error codes
+ERROR_CANNOT_CONNECT = "cannot_connect"
+ERROR_INVALID_AUTH = "invalid_auth"
+ERROR_API_ERROR = "api_error"

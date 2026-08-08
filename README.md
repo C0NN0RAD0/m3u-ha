@@ -1,38 +1,26 @@
 # M3U Editor Home Assistant Integration
 
-[![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg?style=for-the-badge)](https://github.com/hacs/integration)
-[![GitHub Release](https://img.shields.io/github/v/release/C0NN0RAD0/m3u-ha?style=for-the-badge)](https://github.com/C0NN0RAD0/m3u-ha/releases)
-[![GitHub License](https://img.shields.io/github/license/C0NN0RAD0/m3u-ha?style=for-the-badge)](https://github.com/C0NN0RAD0/m3u-ha/blob/main/LICENSE)
-[![GitHub Issues](https://img.shields.io/github/issues/C0NN0RAD0/m3u-ha?style=for-the-badge)](https://github.com/C0NN0RAD0/m3u-ha/issues)
-
-**M3U Editor integration for Home Assistant** - Connect to your [M3U Editor](https://github.com/sparkison/m3u-editor) instance and monitor/control your IPTV playlists, EPGs, and channels.
+This integration connects Home Assistant to the [M3U Editor](https://github.com/sparkison/m3u-editor) API, allowing you to monitor and control your IPTV playlists, EPGs, and channels directly from Home Assistant.
 
 ## Features
 
-- **📊 Sensors**: Monitor playlist and EPG statistics (channel count, programme count, last sync time)
-- **🔄 Switches**: Enable/disable auto-sync for playlists
-- **🔘 Buttons**: Manually trigger playlist and EPG sync operations
-- **🎵 Media Players**: Control playlist playback (basic integration)
-- **🛠️ Services**: Call services to sync playlists, EPGs, or refresh all data
+- **Sensors**: Monitor playlist and EPG statistics (channel count, programme count, last sync time)
+- **Switches**: Enable/disable auto-sync for playlists
+- **Buttons**: Manually trigger playlist and EPG sync operations
+- **Media Players**: Control playlist playback (basic integration)
+- **Services**: Call services to sync playlists, EPGs, or refresh all data
 
 ## Installation
 
-### HACS (Recommended)
-
-1. Ensure [HACS](https://hacs.xyz/) is installed
-2. Go to **HACS > Integrations**
-3. Click **➕ Explore & Download Repositories**
-4. Search for **"M3U Editor"**
-5. Click **Download**
-6. Restart Home Assistant
-7. Go to **Settings > Devices & Services > Add Integration** and select **M3U Editor**
-
 ### Manual Installation
 
-1. Download the latest release from [GitHub Releases](https://github.com/C0NN0RAD0/m3u-ha/releases)
-2. Copy the `m3u_editor` folder to your Home Assistant `custom_components` directory
-3. Restart Home Assistant
-4. Go to **Settings > Devices & Services > Add Integration** and select **M3U Editor**
+1. Copy the `m3u_editor` folder from `custom_components` to your Home Assistant `custom_components` directory
+2. Restart Home Assistant
+3. Go to **Settings > Devices & Services > Add Integration** and select **M3U Editor**
+
+### HACS Installation (Future)
+
+This integration will be available through HACS once it's published.
 
 ## Configuration
 
@@ -64,7 +52,7 @@ When adding the integration, you'll need to provide:
 
 ### Media Players
 
-- **Playlist Media Players**: Basic media player integration for playlists
+- **Playlist Media Players**: Basic media player integration for playlists (playback functionality depends on your setup)
 
 ## Services
 
@@ -156,13 +144,3 @@ To contribute to this integration:
 ## License
 
 This integration is licensed under the MIT License. See the LICENSE file for details.
-
-## Support
-
-- [GitHub Issues](https://github.com/C0NN0RAD0/m3u-ha/issues) - Report bugs and request features
-- [Discord](https://discord.gg/rS3abJ5dz7) - Join the M3U Editor Discord for support
-
-## Credits
-
-- [M3U Editor](https://github.com/sparkison/m3u-editor) - The amazing IPTV editor this integration connects to
-- [Home Assistant](https://www.home-assistant.io/) - The open-source home automation platform
