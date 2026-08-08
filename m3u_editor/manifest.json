@@ -17,5 +17,6 @@
     "background_color": "#ffffff"
   },
   "category": "media",
-  "sub_category": "iptv"
+  "sub_category": "iptv",
+  "min_homeassistant_version": "2024.6.0"
 }

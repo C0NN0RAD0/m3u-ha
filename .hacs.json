@@ -1,0 +1,20 @@
+{
+  "category": "integration",
+  "name": "M3U Editor",
+  "repository": "C0NN0RAD0/m3u-ha",
+  "domain": "m3u_editor",
+  "documentation": "https://github.com/C0NN0RAD0/m3u-ha",
+  "issue_tracker": "https://github.com/C0NN0RAD0/m3u-ha/issues",
+  "license": "MIT",
+  "topics": ["iptv", "m3u", "epg", "media"],
+  "homeassistant": "2024.6.0",
+  "python": "3.11",
+  "dependencies": [],
+  "render_readme": true,
+  "branding": {
+    "color_primary": "#4a8fe7",
+    "color_secondary": "#ffffff",
+    "icon": "mdi:playlist-play",
+    "logo": "m3u_editor/logo.png"
+  }
+}
