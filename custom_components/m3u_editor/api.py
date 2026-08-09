@@ -9,6 +9,7 @@ from typing import Any
 from aiohttp import ClientError, ClientSession
 from aiohttp.hdrs import METH_GET, METH_POST, METH_PATCH
 
+from homeassistant.core import HomeAssistant
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
 from .const import (
@@ -37,8 +38,9 @@ _LOGGER = logging.getLogger(__name__)
 class M3UEditorAPI:
     """API client for M3U Editor."""
 
-    def __init__(self, config: dict[str, Any]) -> None:
+    def __init__(self, hass: HomeAssistant, config: dict[str, Any]) -> None:
         """Initialize the API client."""
+        self.hass = hass
         self._config = config
         self._session: ClientSession | None = None
         self._access_token: str | None = None
@@ -56,7 +58,7 @@ class M3UEditorAPI:
     async def async_get_session(self) -> ClientSession:
         """Get or create a session."""
         if self._session is None or self._session.closed:
-            self._session = async_get_clientsession()
+            self._session = async_get_clientsession(self.hass)
         return self._session
 
     async def _ensure_authenticated(self) -> None:

@@ -36,7 +36,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     hass.data.setdefault(DOMAIN, {})
     
     # Create API client
-    api_client = M3UEditorAPI(entry.data)
+    api_client = M3UEditorAPI(hass, entry.data)
     
     # Get scan interval from options or use default
     scan_interval = timedelta(
