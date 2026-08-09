@@ -67,6 +67,30 @@ class M3UEditorDataUpdateCoordinator(DataUpdateCoordinator):
             except Exception as err:
                 _LOGGER.warning("Failed to get channels: %s", err)
                 data["channels"] = []
+                
+            # Get proxy status
+            try:
+                proxy_status = await self._api_client.async_get_proxy_status()
+                data["proxy_status"] = proxy_status
+            except Exception as err:
+                _LOGGER.debug("Failed to get proxy status (may be disabled): %s", err)
+                data["proxy_status"] = {}
+                
+            # Get proxy streams
+            try:
+                proxy_streams = await self._api_client.async_get_proxy_streams()
+                data["proxy_streams"] = proxy_streams
+            except Exception as err:
+                _LOGGER.debug("Failed to get proxy streams: %s", err)
+                data["proxy_streams"] = {}
+                
+            # Get system stats
+            try:
+                system_stats = await self._api_client.async_get_system_stats()
+                data["system_stats"] = system_stats
+            except Exception as err:
+                _LOGGER.warning("Failed to get system stats: %s", err)
+                data["system_stats"] = {}
             
             return data
         

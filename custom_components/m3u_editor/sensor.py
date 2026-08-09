@@ -34,9 +34,17 @@ from .const import (
     ATTR_STATUS,
     ATTR_SOURCE_TYPE,
     ATTR_IS_PROCESSING,
+    ATTR_PROXY_HEALTH,
+    ATTR_TOTAL_CLIENTS,
+    ATTR_BANDWIDTH_KBPS,
+    ATTR_MODE,
+    ATTR_PROXY_URL,
+    ATTR_STREAMS_BY_PLAYLIST,
     DOMAIN,
     ENTITY_TYPE_EPG,
     ENTITY_TYPE_PLAYLIST,
+    ENTITY_TYPE_PROXY,
+    ENTITY_TYPE_SYSTEM,
 )
 
 _LOGGER = logging.getLogger(__name__)
@@ -54,7 +62,7 @@ async def async_setup_entry(
     
     # Create sensors for playlists
     playlists = coordinator.data.get("playlists", [])
-    sensors = []
+    sensors: list[M3UEditorBaseSensor] = []
     
     for playlist in playlists:
         sensors.append(
@@ -73,6 +81,17 @@ async def async_setup_entry(
                 epg=epg,
             )
         )
+    
+    # Create system sensor
+    if "system_stats" in coordinator.data and coordinator.data["system_stats"]:
+        sensors.append(M3UEditorSystemSensor(coordinator, coordinator.data["system_stats"]))
+        
+    # Create proxy sensors
+    if "proxy_status" in coordinator.data and coordinator.data["proxy_status"]:
+        sensors.append(M3UEditorProxySensor(coordinator, coordinator.data["proxy_status"]))
+        
+    if "proxy_streams" in coordinator.data and coordinator.data["proxy_streams"]:
+        sensors.append(M3UEditorProxyStreamsSensor(coordinator, coordinator.data["proxy_streams"]))
     
     async_add_entities(sensors)
 
@@ -180,6 +199,94 @@ class M3UEditorEpgSensor(M3UEditorBaseSensor):
             ATTR_STATUS: self._epg.get(ATTR_STATUS),
             ATTR_SOURCE_TYPE: self._epg.get(ATTR_SOURCE_TYPE),
             ATTR_IS_PROCESSING: self._epg.get(ATTR_IS_PROCESSING),
+        }
+
+
+class M3UEditorSystemSensor(M3UEditorBaseSensor):
+    """Representation of a system status sensor."""
+
+    def __init__(
+        self,
+        coordinator: DataUpdateCoordinator,
+        system_stats: dict[str, Any],
+    ) -> None:
+        """Initialize the system sensor."""
+        super().__init__(
+            coordinator=coordinator,
+            entity_type=ENTITY_TYPE_SYSTEM,
+            unique_id="system_total_channels",
+            name="Total Channels",
+        )
+        self._system_stats = system_stats
+        self._attr_native_value = system_stats.get("total_channels", 0)
+        self._attr_state_class = SensorStateClass.MEASUREMENT
+
+    @property
+    def native_unit_of_measurement(self) -> str:
+        """Return the unit of measurement."""
+        return "channels"
+
+
+class M3UEditorProxySensor(M3UEditorBaseSensor):
+    """Representation of a proxy status sensor."""
+
+    def __init__(
+        self,
+        coordinator: DataUpdateCoordinator,
+        proxy_status: dict[str, Any],
+    ) -> None:
+        """Initialize the proxy sensor."""
+        super().__init__(
+            coordinator=coordinator,
+            entity_type=ENTITY_TYPE_PROXY,
+            unique_id="proxy_status",
+            name="Proxy Status",
+        )
+        self._proxy_status = proxy_status
+        self._attr_native_value = proxy_status.get(ATTR_PROXY_HEALTH, "unknown").title()
+
+    @property
+    def extra_state_attributes(self) -> dict[str, Any]:
+        """Return the state attributes."""
+        return {
+            ATTR_MODE: self._proxy_status.get(ATTR_MODE),
+            ATTR_PROXY_URL: self._proxy_status.get(ATTR_PROXY_URL),
+            ATTR_STREAMS_BY_PLAYLIST: self._proxy_status.get(ATTR_STREAMS_BY_PLAYLIST, []),
+        }
+
+
+class M3UEditorProxyStreamsSensor(M3UEditorBaseSensor):
+    """Representation of a proxy active streams sensor."""
+
+    def __init__(
+        self,
+        coordinator: DataUpdateCoordinator,
+        proxy_streams: dict[str, Any],
+    ) -> None:
+        """Initialize the proxy streams sensor."""
+        super().__init__(
+            coordinator=coordinator,
+            entity_type=ENTITY_TYPE_PROXY,
+            unique_id="proxy_active_streams",
+            name="Active Proxy Streams",
+        )
+        self._proxy_streams = proxy_streams
+        stats = proxy_streams.get("globalStats", {})
+        self._attr_native_value = stats.get("active_streams", 0)
+        self._attr_state_class = SensorStateClass.MEASUREMENT
+
+    @property
+    def native_unit_of_measurement(self) -> str:
+        """Return the unit of measurement."""
+        return "streams"
+
+    @property
+    def extra_state_attributes(self) -> dict[str, Any]:
+        """Return the state attributes."""
+        stats = self._proxy_streams.get("globalStats", {})
+        return {
+            ATTR_TOTAL_CLIENTS: stats.get("total_clients", 0),
+            ATTR_BANDWIDTH_KBPS: stats.get("total_bandwidth_kbps", 0),
         }
 
 

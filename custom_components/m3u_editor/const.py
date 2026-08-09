@@ -24,10 +24,11 @@ CONF_SSL = "ssl"
 CONF_VERIFY_SSL = "verify_ssl"
 CONF_SCAN_INTERVAL = "scan_interval"
 
-# API endpoints (from web.php)
 API_ENDPOINT_PLAYLISTS = "/user/playlists"
 API_ENDPOINT_EPGS = "/user/epgs"
 API_ENDPOINT_CHANNELS = "/channel/get"
+API_ENDPOINT_PROXY_STATUS = "/proxy/status"
+API_ENDPOINT_PROXY_STREAMS = "/proxy/streams/active"
 API_ENDPOINT_PLAYLIST_STATS = "/playlist/{uuid}/stats"
 API_ENDPOINT_PLAYLIST_SYNC = "/playlist/{uuid}/sync"
 API_ENDPOINT_EPG_SYNC = "/epg/{uuid}/sync"
@@ -55,6 +56,12 @@ ATTR_LAST_SYNC = "last_sync"
 ATTR_STATUS = "status"
 ATTR_SOURCE_TYPE = "source_type"
 ATTR_IS_PROCESSING = "is_processing"
+ATTR_PROXY_HEALTH = "health"
+ATTR_TOTAL_CLIENTS = "total_clients"
+ATTR_BANDWIDTH_KBPS = "bandwidth_kbps"
+ATTR_MODE = "mode"
+ATTR_PROXY_URL = "proxy_url"
+ATTR_STREAMS_BY_PLAYLIST = "streams_by_playlist"
 
 # Services
 SERVICE_SYNC_PLAYLIST = "sync_playlist"
@@ -66,6 +73,7 @@ ENTITY_TYPE_PLAYLIST = "playlist"
 ENTITY_TYPE_CHANNEL = "channel"
 ENTITY_TYPE_EPG = "epg"
 ENTITY_TYPE_PROXY = "proxy"
+ENTITY_TYPE_SYSTEM = "system"
 
 # Error codes
 ERROR_CANNOT_CONNECT = "cannot_connect"

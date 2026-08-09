@@ -25,6 +25,8 @@ from .const import (
     API_ENDPOINT_PLAYLISTS,
     API_ENDPOINT_EPGS,
     API_ENDPOINT_CHANNELS,
+    API_ENDPOINT_PROXY_STATUS,
+    API_ENDPOINT_PROXY_STREAMS,
     API_ENDPOINT_PLAYLIST_STATS,
     API_ENDPOINT_PLAYLIST_SYNC,
     API_ENDPOINT_EPG_SYNC,
@@ -234,6 +236,22 @@ class M3UEditorAPI:
         if playlist_id:
             params["playlist_id"] = playlist_id
         return await self.async_request(METH_GET, API_ENDPOINT_CHANNELS, params=params)
+
+    async def async_get_system_stats(self) -> dict[str, Any]:
+        """Get global system statistics."""
+        # Get total channels by fetching 1 channel and reading meta.total
+        response = await self.async_request(METH_GET, API_ENDPOINT_CHANNELS, params={"limit": 1})
+        meta = response.get("meta", {})
+        total_channels = meta.get("total", 0)
+        return {"total_channels": total_channels}
+
+    async def async_get_proxy_status(self) -> dict[str, Any]:
+        """Get proxy status."""
+        return await self.async_request(METH_GET, API_ENDPOINT_PROXY_STATUS)
+
+    async def async_get_proxy_streams(self) -> dict[str, Any]:
+        """Get active proxy streams."""
+        return await self.async_request(METH_GET, API_ENDPOINT_PROXY_STREAMS)
 
     async def async_get_playlist_stats(self, uuid: str) -> dict[str, Any]:
         """Get playlist statistics."""
