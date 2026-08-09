@@ -41,13 +41,20 @@ DEFAULT_TIMEOUT = 30
 DEFAULT_SCAN_INTERVAL = timedelta(minutes=5)
 
 # Attributes
-ATTR_PLAYLIST_ID = "playlist_id"
-ATTR_PLAYLIST_NAME = "playlist_name"
+ATTR_UUID = "uuid"
+ATTR_NAME = "name"
+ATTR_TOTAL_CHANNELS = "total_channels"
+ATTR_ENABLED_CHANNELS = "enabled_channels"
+ATTR_LIVE_CHANNELS = "live_channels"
+ATTR_VOD_CHANNELS = "vod_channels"
+ATTR_GROUPS_COUNT = "groups_count"
+ATTR_PROXY_ENABLED = "proxy_enabled"
+ATTR_ACTIVE_STREAMS = "active_streams"
 ATTR_CHANNEL_COUNT = "channel_count"
-ATTR_EPG_COUNT = "epg_count"
 ATTR_LAST_SYNC = "last_sync"
 ATTR_STATUS = "status"
-ATTR_UUID = "uuid"
+ATTR_SOURCE_TYPE = "source_type"
+ATTR_IS_PROCESSING = "is_processing"
 
 # Services
 SERVICE_SYNC_PLAYLIST = "sync_playlist"

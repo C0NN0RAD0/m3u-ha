@@ -18,9 +18,8 @@ from homeassistant.helpers.update_coordinator import (
 )
 
 from .const import (
-    ATTR_PLAYLIST_ID,
-    ATTR_PLAYLIST_NAME,
     ATTR_UUID,
+    ATTR_NAME,
     DOMAIN,
     ENTITY_TYPE_PLAYLIST,
 )
@@ -79,8 +78,8 @@ class M3UEditorPlaylistAutoSyncSwitch(M3UEditorBaseSwitch):
         playlist: dict[str, Any],
     ) -> None:
         """Initialize the playlist auto-sync switch."""
-        unique_id = playlist.get(ATTR_UUID, playlist.get(ATTR_PLAYLIST_ID, "unknown"))
-        name = f"{playlist.get(ATTR_PLAYLIST_NAME, f'Playlist {unique_id}')} Auto Sync"
+        unique_id = playlist.get(ATTR_UUID, "unknown")
+        name = f"{playlist.get(ATTR_NAME, f'Playlist {unique_id}')} Auto Sync"
         
         super().__init__(
             coordinator=coordinator,
@@ -96,9 +95,8 @@ class M3UEditorPlaylistAutoSyncSwitch(M3UEditorBaseSwitch):
     def extra_state_attributes(self) -> dict[str, Any]:
         """Return the state attributes."""
         return {
-            ATTR_PLAYLIST_ID: self._playlist.get(ATTR_PLAYLIST_ID),
-            ATTR_PLAYLIST_NAME: self._playlist.get(ATTR_PLAYLIST_NAME),
             ATTR_UUID: self._playlist.get(ATTR_UUID),
+            ATTR_NAME: self._playlist.get(ATTR_NAME),
         }
 
     async def async_turn_on(self, **kwargs: Any) -> None:

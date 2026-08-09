@@ -20,10 +20,8 @@ from homeassistant.helpers.update_coordinator import (
 )
 
 from .const import (
-    ATTR_CHANNEL_COUNT,
-    ATTR_PLAYLIST_ID,
-    ATTR_PLAYLIST_NAME,
     ATTR_UUID,
+    ATTR_NAME,
     DOMAIN,
     ENTITY_TYPE_CHANNEL,
 )
@@ -71,8 +69,8 @@ class M3UEditorPlaylistMediaPlayer(CoordinatorEntity, MediaPlayerEntity):
         super().__init__(coordinator)
         self._api_client = api_client
         
-        unique_id = playlist.get(ATTR_UUID, playlist.get(ATTR_PLAYLIST_ID, "unknown"))
-        name = playlist.get(ATTR_PLAYLIST_NAME, f"Playlist {unique_id}")
+        unique_id = playlist.get(ATTR_UUID, "unknown")
+        name = playlist.get(ATTR_NAME, f"Playlist {unique_id}")
         
         self._attr_unique_id = f"{DOMAIN}_{ENTITY_TYPE_CHANNEL}_{unique_id}_media_player"
         self._attr_name = name
@@ -89,10 +87,8 @@ class M3UEditorPlaylistMediaPlayer(CoordinatorEntity, MediaPlayerEntity):
     def extra_state_attributes(self) -> dict[str, Any]:
         """Return the state attributes."""
         return {
-            ATTR_PLAYLIST_ID: self._playlist.get(ATTR_PLAYLIST_ID),
-            ATTR_PLAYLIST_NAME: self._playlist.get(ATTR_PLAYLIST_NAME),
             ATTR_UUID: self._playlist.get(ATTR_UUID),
-            ATTR_CHANNEL_COUNT: self._playlist.get(ATTR_CHANNEL_COUNT),
+            ATTR_NAME: self._playlist.get(ATTR_NAME),
         }
 
     async def async_play_media(

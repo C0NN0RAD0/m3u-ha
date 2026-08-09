@@ -18,11 +18,9 @@ from homeassistant.helpers.update_coordinator import (
 )
 
 from .const import (
-    ATTR_EPG_COUNT,
-    ATTR_LAST_SYNC,
-    ATTR_PLAYLIST_ID,
-    ATTR_PLAYLIST_NAME,
     ATTR_UUID,
+    ATTR_NAME,
+    ATTR_LAST_SYNC,
     DOMAIN,
     ENTITY_TYPE_EPG,
     ENTITY_TYPE_PLAYLIST,
@@ -98,8 +96,8 @@ class M3UEditorPlaylistSyncButton(M3UEditorBaseButton):
         playlist: dict[str, Any],
     ) -> None:
         """Initialize the playlist sync button."""
-        unique_id = playlist.get(ATTR_UUID, playlist.get(ATTR_PLAYLIST_ID, "unknown"))
-        name = f"{playlist.get(ATTR_PLAYLIST_NAME, f'Playlist {unique_id}')} Sync"
+        unique_id = playlist.get(ATTR_UUID, "unknown")
+        name = f"{playlist.get(ATTR_NAME, f'Playlist {unique_id}')} Sync"
         
         super().__init__(
             coordinator=coordinator,
@@ -115,9 +113,8 @@ class M3UEditorPlaylistSyncButton(M3UEditorBaseButton):
     def extra_state_attributes(self) -> dict[str, Any]:
         """Return the state attributes."""
         return {
-            ATTR_PLAYLIST_ID: self._playlist.get(ATTR_PLAYLIST_ID),
-            ATTR_PLAYLIST_NAME: self._playlist.get(ATTR_PLAYLIST_NAME),
             ATTR_UUID: self._playlist.get(ATTR_UUID),
+            ATTR_NAME: self._playlist.get(ATTR_NAME),
             ATTR_LAST_SYNC: self._playlist.get(ATTR_LAST_SYNC),
         }
 
@@ -143,8 +140,8 @@ class M3UEditorEpgSyncButton(M3UEditorBaseButton):
         epg: dict[str, Any],
     ) -> None:
         """Initialize the EPG sync button."""
-        unique_id = epg.get(ATTR_UUID, epg.get("id", "unknown"))
-        name = f"{epg.get('name', f'EPG {unique_id}')} Sync"
+        unique_id = epg.get(ATTR_UUID, "unknown")
+        name = f"{epg.get(ATTR_NAME, f'EPG {unique_id}')} Sync"
         
         super().__init__(
             coordinator=coordinator,
@@ -161,8 +158,7 @@ class M3UEditorEpgSyncButton(M3UEditorBaseButton):
         """Return the state attributes."""
         return {
             ATTR_UUID: self._epg.get(ATTR_UUID),
-            "name": self._epg.get("name"),
-            ATTR_EPG_COUNT: self._epg.get(ATTR_EPG_COUNT),
+            ATTR_NAME: self._epg.get(ATTR_NAME),
             ATTR_LAST_SYNC: self._epg.get(ATTR_LAST_SYNC),
         }
 
