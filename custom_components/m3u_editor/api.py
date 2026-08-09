@@ -27,7 +27,6 @@ from .const import (
     API_ENDPOINT_PLAYLIST_STATS,
     API_ENDPOINT_PLAYLIST_SYNC,
     API_ENDPOINT_EPG_SYNC,
-    API_ENDPOINT_SYSTEM_INFO,
     API_ENDPOINT_TOKEN,
     API_ENDPOINT_TOKEN_REFRESH,
 )
@@ -218,10 +217,6 @@ class M3UEditorAPI:
         except ClientError as err:
             _LOGGER.error("API request error: %s", err)
             raise
-
-    async def async_get_system_info(self) -> dict[str, Any]:
-        """Get system information."""
-        return await self.async_request(METH_GET, API_ENDPOINT_SYSTEM_INFO)
 
     async def async_get_playlists(self) -> list[dict[str, Any]]:
         """Get all playlists."""

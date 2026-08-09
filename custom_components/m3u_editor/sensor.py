@@ -67,13 +67,6 @@ async def async_setup_entry(
             )
         )
     
-    # Add system info sensor
-    sensors.append(
-        M3UEditorSystemSensor(
-            coordinator=coordinator,
-        )
-    )
-    
     async_add_entities(sensors)
 
 
@@ -175,33 +168,4 @@ class M3UEditorEpgSensor(M3UEditorBaseSensor):
         }
 
 
-class M3UEditorSystemSensor(M3UEditorBaseSensor):
-    """Sensor for M3U Editor system information."""
 
-    def __init__(
-        self,
-        coordinator: DataUpdateCoordinator,
-    ) -> None:
-        """Initialize the system sensor."""
-        super().__init__(
-            coordinator=coordinator,
-            entity_type="system",
-            unique_id="system",
-            name="M3U Editor System",
-        )
-        
-        self._attr_native_value = "online"
-        self._attr_state_class = SensorStateClass.MEASUREMENT
-        self._attr_device_class = SensorDeviceClass.ENUM
-
-    @property
-    def extra_state_attributes(self) -> dict[str, Any]:
-        """Return the state attributes."""
-        system_info = self.coordinator.data.get("system_info", {})
-        return {
-            "version": system_info.get("app", {}).get("version"),
-            "environment": system_info.get("app", {}).get("environment"),
-            "php_version": system_info.get("system", {}).get("php_version"),
-            "laravel_version": system_info.get("system", {}).get("laravel_version"),
-            "server_time": system_info.get("system", {}).get("server_time"),
-        }

@@ -24,16 +24,15 @@ CONF_SSL = "ssl"
 CONF_VERIFY_SSL = "verify_ssl"
 CONF_SCAN_INTERVAL = "scan_interval"
 
-# API endpoints
-API_ENDPOINT_PLAYLISTS = "/api/user/playlists"
-API_ENDPOINT_EPGS = "/api/user/epgs"
-API_ENDPOINT_CHANNELS = "/api/channel/get"
-API_ENDPOINT_PLAYLIST_STATS = "/api/playlist/{uuid}/stats"
-API_ENDPOINT_PLAYLIST_SYNC = "/api/playlist/{uuid}/sync"
-API_ENDPOINT_EPG_SYNC = "/api/epg/{uuid}/sync"
-API_ENDPOINT_SYSTEM_INFO = "/api/system/info"
+# API endpoints (from web.php)
+API_ENDPOINT_PLAYLISTS = "/user/playlists"
+API_ENDPOINT_EPGS = "/user/epgs"
+API_ENDPOINT_CHANNELS = "/channel/get"
+API_ENDPOINT_PLAYLIST_STATS = "/playlist/{uuid}/stats"
+API_ENDPOINT_PLAYLIST_SYNC = "/playlist/{uuid}/sync"
+API_ENDPOINT_EPG_SYNC = "/epg/{uuid}/sync"
 
-# Token endpoints (Dispatcharr-compatible)
+# Token endpoints (Dispatcharr-compatible from api.php)
 API_ENDPOINT_TOKEN = "/api/accounts/token"
 API_ENDPOINT_TOKEN_REFRESH = "/api/accounts/token/refresh"
 

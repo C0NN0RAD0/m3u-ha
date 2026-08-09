@@ -72,45 +72,41 @@ async def validate_input(hass: HomeAssistant, data: dict[str, Any]) -> dict[str,
         if api_key:
             headers["Authorization"] = f"Bearer {api_key}"
         
-        # Try the system info endpoint (public)
-        url = f"{base_url}/api/system/info"
-        
-        async with session.get(
-            url,
-            headers=headers,
-            ssl=verify_ssl if ssl else False,
-            timeout=10,
-        ) as response:
-            if response.status == 200:
-                return {"base_url": base_url, **data}
-            elif response.status == 401:
-                # Try with username/password
-                if username and password:
-                    # Try to authenticate using Dispatcharr-compatible endpoint
-                    auth_url = f"{base_url}/api/accounts/token"
-                    auth_data = {
-                        "username": username,
-                        "password": password,
-                    }
-                    
-                    async with session.post(
-                        auth_url,
-                        json=auth_data,
-                        ssl=verify_ssl if ssl else False,
-                        timeout=10,
-                    ) as auth_response:
-                        if auth_response.status == 200:
-                            auth_data = await auth_response.json()
-                            if "access" in auth_data:
-                                # Store the token for later use
-                                data["access_token"] = auth_data["access"]
-                                data["refresh_token"] = auth_data.get("refresh")
-                                return {"base_url": base_url, **data}
-                        raise InvalidAuth
-                raise InvalidAuth
-            else:
-                raise CannotConnect
+        if username and password:
+            # Try to authenticate using Dispatcharr-compatible endpoint
+            auth_url = f"{base_url}/api/accounts/token"
+            auth_data = {
+                "username": username,
+                "password": password,
+            }
+            
+            async with session.post(
+                auth_url,
+                json=auth_data,
+                ssl=verify_ssl if ssl else False,
+                timeout=10,
+            ) as auth_response:
+                if auth_response.status == 200:
+                    auth_data = await auth_response.json()
+                    if "access" in auth_data:
+                        data["access_token"] = auth_data["access"]
+                        data["refresh_token"] = auth_data.get("refresh")
+                        return {"base_url": base_url, **data}
+                elif auth_response.status == 401:
+                    raise InvalidAuth
+                else:
+                    raise CannotConnect
+        else:
+            # Just test basic connectivity if no auth provided
+            url = f"{base_url}/login"
+            async with session.get(url, ssl=verify_ssl if ssl else False, timeout=10) as response:
+                if response.status == 200:
+                    return {"base_url": base_url, **data}
+                else:
+                    raise CannotConnect
     
+    except (CannotConnect, InvalidAuth):
+        raise
     except ClientError as err:
         _LOGGER.error("Error connecting to M3U Editor API: %s", err)
         raise CannotConnect from err

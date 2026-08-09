@@ -44,14 +44,6 @@ class M3UEditorDataUpdateCoordinator(DataUpdateCoordinator):
         try:
             data: dict[str, Any] = {}
             
-            # Get system info
-            try:
-                system_info = await self._api_client.async_get_system_info()
-                data["system_info"] = system_info
-            except Exception as err:
-                _LOGGER.warning("Failed to get system info: %s", err)
-                data["system_info"] = {}
-            
             # Get playlists
             try:
                 playlists = await self._api_client.async_get_playlists()
