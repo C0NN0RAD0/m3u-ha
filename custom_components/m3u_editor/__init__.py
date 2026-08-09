@@ -35,35 +35,40 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     # Store the config entry data
     hass.data.setdefault(DOMAIN, {})
     
-    # Create API client
-    api_client = M3UEditorAPI(hass, entry.data)
-    
-    # Get scan interval from options or use default
-    scan_interval = timedelta(
-        seconds=entry.options.get(CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL.seconds)
-    )
-    
-    # Create coordinator
-    coordinator = M3UEditorDataUpdateCoordinator(
-        hass=hass,
-        api_client=api_client,
-        update_interval=scan_interval,
-    )
-    
-    # Store data
-    hass.data[DOMAIN][entry.entry_id] = {
-        "api": api_client,
-        "coordinator": coordinator,
-        "config": entry.data,
-    }
-    
-    # Initial data fetch
-    await coordinator.async_config_entry_first_refresh()
-    
-    # Forward the setup to each platform
-    await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
-    
-    return True
+    try:
+        # Create API client
+        api_client = M3UEditorAPI(hass, entry.data)
+        
+        # Get scan interval from options or use default
+        options = getattr(entry, "options", {})
+        scan_interval = timedelta(
+            seconds=options.get(CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL.seconds)
+        )
+        
+        # Create coordinator
+        coordinator = M3UEditorDataUpdateCoordinator(
+            hass=hass,
+            api_client=api_client,
+            update_interval=scan_interval,
+        )
+        
+        # Store data
+        hass.data[DOMAIN][entry.entry_id] = {
+            "api": api_client,
+            "coordinator": coordinator,
+            "config": entry.data,
+        }
+        
+        # Initial data fetch
+        await coordinator.async_config_entry_first_refresh()
+        
+        # Forward the setup to each platform
+        await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
+        
+        return True
+    except Exception as err:
+        _LOGGER.error("CRITICAL SETUP ERROR: %s", err, exc_info=True)
+        return False
 
 
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
