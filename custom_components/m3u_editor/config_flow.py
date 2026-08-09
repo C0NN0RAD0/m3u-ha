@@ -42,8 +42,7 @@ STEP_USER_DATA_SCHEMA = vol.Schema(
         vol.Optional(CONF_USERNAME): str,
         vol.Optional(CONF_PASSWORD): str,
         vol.Optional(CONF_API_KEY): str,
-        vol.Optional(CONF_SCAN_INTERVAL,
-    CONF_SSL, default=False): bool,
+        vol.Optional(CONF_SSL, default=False): bool,
         vol.Optional(CONF_VERIFY_SSL, default=True): bool,
     }
 )
@@ -58,8 +57,7 @@ async def validate_input(hass: HomeAssistant, data: dict[str, Any]) -> dict[str,
     username = data.get(CONF_USERNAME)
     password = data.get(CONF_PASSWORD)
     api_key = data.get(CONF_API_KEY)
-    ssl = data.get(CONF_SCAN_INTERVAL,
-    CONF_SSL, False)
+    ssl = data.get(CONF_SSL, False)
     verify_ssl = data.get(CONF_VERIFY_SSL, True)
     
     # Build the base URL
