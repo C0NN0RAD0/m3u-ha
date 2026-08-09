@@ -178,21 +178,25 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
         self, user_input: dict[str, Any] | None = None
     ) -> FlowResult:
         """Handle options flow."""
-        if user_input is not None:
-            self.options.update(user_input)
-            return self.async_create_entry(title="", data=self.options)
+        try:
+            if user_input is not None:
+                self.options.update(user_input)
+                return self.async_create_entry(title="", data=self.options)
 
-        return self.async_show_form(
-            step_id="init",
-            data_schema=vol.Schema(
-                {
-                    vol.Optional(
-                        CONF_SCAN_INTERVAL,
-                        default=self.options.get(CONF_SCAN_INTERVAL, 300),
-                    ): int,
-                }
-            ),
-        )
+            return self.async_show_form(
+                step_id="init",
+                data_schema=vol.Schema(
+                    {
+                        vol.Optional(
+                            CONF_SCAN_INTERVAL,
+                            default=self.options.get(CONF_SCAN_INTERVAL, 300),
+                        ): int,
+                    }
+                ),
+            )
+        except Exception as err:
+            _LOGGER.error("CRITICAL OPTIONS FLOW ERROR: %s", err, exc_info=True)
+            raise
 
 
 class CannotConnect(HomeAssistantError):
